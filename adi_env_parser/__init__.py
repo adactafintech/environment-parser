@@ -1,1 +1,1 @@
-from ._parsers import EnvironmentParser
+from ._parsers import EnvironmentParser  # noqa: F401

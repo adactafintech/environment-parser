@@ -1,5 +1,3 @@
-import os
-import json
 from adi_env_parser import EnvironmentParser
 from os import environ as env
 

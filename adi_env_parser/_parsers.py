@@ -10,16 +10,18 @@ class EnvironmentParser:
 
 
         Args:
-            prefix (str, optional): Environment variable prefix without _. Defaults to "PYENV".
-            config_file (str, optional): Existing configuration file to update. Defaults to None.
+            prefix (str, optional): Environment variable prefix without _.
+                Defaults to "PYENV".
+            config_file (str, optional): Existing configuration file to update.
+                Defaults to None.
         """
         self.key_delimiter = "__"
         self.namespace = prefix
         self.os_env = self.extract_variables(self.namespace)
         self.configuration = {} if not config_file else \
-             self.load_json_configuration(config_file)
+            self.load_json_configuration(config_file)
         self.build_configuration()
-    
+
     def build_configuration(self):
         for k, v in self.os_env.items():
             key_levels = k.split(self.key_delimiter)
@@ -37,10 +39,11 @@ class EnvironmentParser:
                         # are reserved for list indices and this case is likely
                         # a misconfiguration
                         if current_key.isdigit():
-                            print(f"Invalid object property name " \
-                                f"{current_key}")
+                            print(f"Invalid object property name "
+                                  f"{current_key}")
                             break
-                        b = b.setdefault(current_key, [] if next_key.isdigit() else {})
+                        b = b.setdefault(current_key, [] if next_key.isdigit()
+                                         else {})
                     elif isinstance(b, list):
                         if len(b) > int(current_key):
                             b = b[int(current_key)]
@@ -48,8 +51,8 @@ class EnvironmentParser:
                             b.append({})
                             b = b[int(current_key)]
                         else:
-                            print(f"Index {current_key} out of bounds for " \
-                                f"list of length {len(b)}")
+                            print(f"Index {current_key} out of bounds for "
+                                  f"list of length {len(b)}")
                             break
                 # If it is the last element, we need to either set the value
                 # of the dictionary key or set the value of the list index
@@ -59,8 +62,8 @@ class EnvironmentParser:
                         # are reserved for list indices and this case is likely
                         # a misconfiguration
                         if current_key.isdigit():
-                            print(f"Invalid object property name " \
-                                f"{current_key}")
+                            print(f"Invalid object property name "
+                                  f"{current_key}")
                             break
                         b[current_key] = v
                     elif isinstance(b, list):
@@ -74,10 +77,9 @@ class EnvironmentParser:
                         # In case index order defined in environment variables
                         # is incorrect, skip that variable.
                         else:
-                            print(f"Index {current_key} out of bounds for " \
-                                 f"list of length {len(b)}") 
+                            print(f"Index {current_key} out of bounds for "
+                                  f"list of length {len(b)}")
                             break
-
 
     @staticmethod
     def extract_variables(namespace: str) -> dict:
@@ -101,9 +103,9 @@ class EnvironmentParser:
                 extracted.update(
                     {no_pfx_name: os.environ.get(variable_name)}
                 )
-        
+
         return extracted
-    
+
     @staticmethod
     def load_json_configuration(file_path: str) -> dict:
         """Load JSON formated configuration file
