@@ -6,3 +6,9 @@
 pip install -e ".[dev]"
 pip install -e ".[test]
 ```
+
+## Install pre-commit
+
+```sh
+pre-commit install
+```
