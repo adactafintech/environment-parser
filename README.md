@@ -1,5 +1,9 @@
 # Environment parser
 
+## Requirements
+
+* Python - Minimum required version is 3.8
+
 ## Using the environment parser
 
 EnvironmentParser class parses all environment variables with certain prefix and
@@ -14,6 +18,30 @@ General variable structure rules:
 * arrays can be specified by using numeric index as a key within particular level
 * array numeric indices should be defined in order, variables with invalid index
   will be discarded
+
+### Using the EnvironmentParser class
+
+Example of instantiating of EnvironmentParser object using `ADINSURE` as a prefix
+for environment variables. Upon instantiation, the object will automatically parse
+the current environment variables and store them in its `configuration` property.
+
+```python
+import json
+from adi_env_parser import EnvironmentParser
+
+parser = EnvironmentParser(prefix="ADINSURE")
+print(json.dump(json.dumps(parser.configuration, indent=4)))
+```
+
+It is possible to provide existing JSON formatted file as a configuration base.
+
+```python
+import json
+from adi_env_parser import EnvironmentParser
+
+parser = EnvironmentParser(prefix="ADINSURE", config_file="configuration.json")
+print(json.dump(json.dumps(parser.configuration, indent=4)))
+```
 
 ### Examples
 
