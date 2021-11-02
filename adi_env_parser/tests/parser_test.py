@@ -5,7 +5,75 @@ TEST_DATA_DIR = "adi_env_parser/test_data"
 
 
 class TestParser:
-    def test_parser_empty(self):
+    def test_parser_empy_objects(self):
+        env_prefix = "OBJ"
+
+        expected = {
+            "key_one": "value one",
+            "key_two": {
+                "sub_one": "value_sub_one",
+                "sub_two": "value_sub_two"
+            }
+        }
+
+        env["OBJ_key_one"] = "value one"
+        env["OBJ_key_two__sub_one"] = "value_sub_one"
+        env["OBJ_key_two__sub_two"] = "value_sub_two"
+
+        parser = EnvironmentParser(env_prefix)
+        assert parser.configuration == expected
+
+    def test_parser_empy_lists(self):
+        env_prefix = "LIST"
+
+        expected = {
+            "list_one": [
+                "one",
+                "two",
+                "three"
+            ],
+            "key_one": {
+                "list_two": [
+                    "four",
+                    "five"
+                ]
+            }
+        }
+
+        env["LIST_list_one__0"] = "one"
+        env["LIST_list_one__1"] = "two"
+        env["LIST_list_one__2"] = "three"
+        env["LIST_key_one__list_two__0"] = "four"
+        env["LIST_key_one__list_two__1"] = "five"
+
+        parser = EnvironmentParser(env_prefix)
+        assert parser.configuration == expected
+
+    def test_parser_empy_dictionary_in_list(self):
+        env_prefix = "DICTLIST"
+
+        expected = {
+            "people": [
+                {
+                    "name": "John",
+                    "surname": "Smith"
+                },
+                {
+                    "name": "Jane",
+                    "surname": "Smith"
+                }
+            ]
+        }
+
+        env["DICTLIST_people__0__name"] = "John"
+        env["DICTLIST_people__0__surname"] = "Smith"
+        env["DICTLIST_people__1__name"] = "Jane"
+        env["DICTLIST_people__1__surname"] = "Smith"
+
+        parser = EnvironmentParser(env_prefix)
+        assert parser.configuration == expected
+
+    def test_parser_empty_complex(self):
         env_prefix = "TEST"
 
         expected = {
@@ -49,45 +117,23 @@ class TestParser:
 
         parser = EnvironmentParser(env_prefix)
         assert parser.configuration == expected
-        print(parser.configuration)
 
-    def test_parser_empty_invalid_key(self):
+    def test_parser_empty_invalid_list_key(self):
         env_prefix = "TEST2"
 
         expected = {
-            "work_tasks": {
-                "task_two": "done"
-            },
-            "work_inventory": [
-                "keyboard"
-            ],
-            "home": {
-                "kitchen_inventory": [
-                    "cuttlery",
-                    "pots"
-                ]
-            },
             "games": {
-                "invalid_key": "Not valid list key"
+                "invalid_list_key": "Not valid list key"
             }
         }
 
         # Set environment for tests
-        env["TEST2_work_tasks__task_two"] = "done"
-        env["TEST2_work_inventory__0"] = "keyboard"
-        env["TEST2_home__kitchen_inventory__0"] = "cuttlery"
-        env["TEST2_home__kitchen_inventory__1"] = "pots"
-        env["TEST2_games__invalid_key"] = "Not valid list key"
+        env["TEST2_games__invalid_list_key"] = "Not valid list key"
         env["TEST2_games__0__title"] = "Unfathomable"
         env["TEST2_games__0__publisher"] = "Fantasy Flight Games"
-        env["TEST2_games__1__title"] = "Cartographers"
-        env["TEST2_games__1__publisher"] = "Thunderworks Games"
-        env["TEST2_games__3__title"] = "Anachrony"
-        env["TEST2_games__3__publisher"] = "Mindclash Games"
 
         parser = EnvironmentParser(env_prefix)
         assert parser.configuration == expected
-        print(parser.configuration)
 
     def test_parser_empty_invalid_prefixes(self):
         env_prefix = "TEST3"
@@ -95,15 +141,6 @@ class TestParser:
         expected = {
             "work_tasks": {
                 "task_two": "done"
-            },
-            "work_inventory": [
-                "keyboard"
-            ],
-            "home": {
-                "kitchen_inventory": [
-                    "cuttlery",
-                    "pots"
-                ]
             }
         }
 
@@ -114,13 +151,9 @@ class TestParser:
         env["TEST3__not_valid"] = "prefix with additional underline and " \
             "key word"
         env["TEST3_work_tasks__task_two"] = "done"
-        env["TEST3_work_inventory__0"] = "keyboard"
-        env["TEST3_home__kitchen_inventory__0"] = "cuttlery"
-        env["TEST3_home__kitchen_inventory__1"] = "pots"
 
         parser = EnvironmentParser(env_prefix)
         assert parser.configuration == expected
-        print(parser.configuration)
 
     def test_parser_empty_underscore_key(self):
         env_prefix = "TEST4"
@@ -139,10 +172,9 @@ class TestParser:
 
         parser = EnvironmentParser(env_prefix)
         assert parser.configuration == expected
-        print(parser.configuration)
 
-    def test_parser_base(self):
-        env_prefix = "BASE"
+    def test_parser_existing_config(self):
+        env_prefix = "EXISTING"
 
         expected = {
             "work_tasks": {
@@ -177,14 +209,14 @@ class TestParser:
         }
 
         # Set environment for tests
-        env["BASE_work_tasks__task_two"] = "done"
-        env["BASE_work_inventory__2"] = "keyboard"
-        env["BASE_home__kitchen_inventory__0"] = "cuttlery"
-        env["BASE_home__kitchen_inventory__1"] = "pots"
-        env["BASE_games__0__title"] = "Unfathomable"
-        env["BASE_games__0__publisher"] = "Fantasy Flight Games"
-        env["BASE_games__1__title"] = "Cartographers"
-        env["BASE_games__1__publisher"] = "Thunderworks Games"
+        env["EXISTING_work_tasks__task_two"] = "done"
+        env["EXISTING_work_inventory__2"] = "keyboard"
+        env["EXISTING_home__kitchen_inventory__0"] = "cuttlery"
+        env["EXISTING_home__kitchen_inventory__1"] = "pots"
+        env["EXISTING_games__0__title"] = "Unfathomable"
+        env["EXISTING_games__0__publisher"] = "Fantasy Flight Games"
+        env["EXISTING_games__1__title"] = "Cartographers"
+        env["EXISTING_games__1__publisher"] = "Thunderworks Games"
 
         parser = EnvironmentParser(env_prefix, f"{TEST_DATA_DIR}/base.json")
         assert parser.configuration == expected
