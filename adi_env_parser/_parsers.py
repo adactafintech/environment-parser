@@ -39,6 +39,11 @@ class EnvironmentParser:
                         # are reserved for list indices and this case is likely
                         # a misconfiguration
                         if current_key.isdigit():
+                            print(f"Invalid object property name {current_key}"
+                                  f"{current_key}")
+                            break
+                        # Do not allow dictionary keys starting with _
+                        elif current_key.startswith("_"):
                             print(f"Invalid object property name "
                                   f"{current_key}")
                             break
@@ -62,6 +67,11 @@ class EnvironmentParser:
                         # are reserved for list indices and this case is likely
                         # a misconfiguration
                         if current_key.isdigit():
+                            print(f"Invalid object property name "
+                                  f"{current_key}")
+                            break
+                        # Do not allow dictionary keys starting with _
+                        elif current_key.startswith("_"):
                             print(f"Invalid object property name "
                                   f"{current_key}")
                             break
@@ -95,9 +105,11 @@ class EnvironmentParser:
         pfx = namespace + "_"
         for variable_name in os.environ.keys():
             if variable_name.startswith(pfx):
-                no_pfx_name = variable_name.lstrip(pfx)
+                # With Python 3.9 remove_prefix function could be used
+                no_pfx_name = variable_name[len(pfx):]
 
-                if no_pfx_name.startswith("_"):
+                # Do not allow empty env variables or those starting with _
+                if len(no_pfx_name) == 0 or no_pfx_name.startswith("_"):
                     continue
 
                 extracted.update(
