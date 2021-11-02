@@ -28,9 +28,9 @@ setup(
             'pytest'
             ],
     },
-    # entry_points={
-    #     'console_scripts': [
-    #         'sample=sample:main',
-    #     ],
-    # },
+    entry_points={
+        'console_scripts': [
+            'adi-env-parser=adi_env_parser._console_parser:main',
+        ],
+    },
 )

@@ -130,6 +130,28 @@ Resulting object:
 }
 ```
 
+### Console utility
+
+Module provides console utility which can be used for parsing of environment
+variables. It also supports reading of existing JSON formatted file and setting
+indentation for output of created configuration JSON object.
+
+```sh
+➜ adi-env-parser --help
+usage: adi-env-parser -p <prefix> -j <base_json_file>
+
+Parses environment variables with defined prefix and creates JSON output from the parsed structure.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --prefix [PREFIX], -p [PREFIX]
+                        Environment variable prefix. Default: PYENV
+  --json [JSON], -j [JSON]
+                        JSON formatted file to read as base configuration
+  --indent [INDENT], -i [INDENT]
+                        Number of spaces to use for indentation of output JSON string
+```
+
 ## Development
 
 ### Install development packages
