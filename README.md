@@ -21,7 +21,7 @@ General variable structure rules:
 
 ### Using the EnvironmentParser class
 
-Example of instantiating of EnvironmentParser object using `ADINSURE` as a prefix
+Example of instantiating of EnvironmentParser object using `MYPREFIX` as a prefix
 for environment variables. Upon instantiation, the object will automatically parse
 the current environment variables and store them in its `configuration` property.
 
@@ -29,7 +29,7 @@ the current environment variables and store them in its `configuration` property
 import json
 from adi_env_parser import EnvironmentParser
 
-parser = EnvironmentParser(prefix="ADINSURE")
+parser = EnvironmentParser(prefix="MYPREFIX")
 print(json.dump(json.dumps(parser.configuration, indent=4)))
 ```
 
@@ -39,7 +39,7 @@ It is possible to provide existing JSON formatted file as a configuration base.
 import json
 from adi_env_parser import EnvironmentParser
 
-parser = EnvironmentParser(prefix="ADINSURE", config_file="configuration.json")
+parser = EnvironmentParser(prefix="MYPREFIX", config_file="configuration.json")
 print(json.dump(json.dumps(parser.configuration, indent=4)))
 ```
 
