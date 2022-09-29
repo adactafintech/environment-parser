@@ -1,0 +1,52 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+  branches:
+    include:
+      - master
+  tags:
+    include:
+      - refs/tags/*
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: test
+  displayName: Test
+  jobs:
+    - job: pytest
+      displayName: 'Run tests'
+      strategy:
+        matrix:
+          Python38:
+            python.version: '3.8'
+          Python39:
+            python.version: '3.9'
+          Python310:
+            python.version: '3.10'
+      steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(python.version)'
+        displayName: 'Use Python $(python.version)'
+      - script: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+        displayName: 'Install dependencies'
+      - script: |
+          pip install pytest pytest-azurepipelines
+          pytest
+        displayName: 'pytest'
+
+- stage: package-publish
+  displayName: 'Package and Publish'
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  jobs:
+    - job: package
+      steps:
+        - script:
+            echo "Packaging happens here"
