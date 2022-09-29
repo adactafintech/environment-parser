@@ -21,7 +21,7 @@ setup(
     extras_require={
         'dev': [
             'pre-commit',
-            'autopep8'
+            'autopep8',
             'pytest'
         ],
         'test': [
