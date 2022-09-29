@@ -42,7 +42,7 @@ stages:
           pytest
         displayName: 'pytest'
 
-- stage: package-publish
+- stage: publish
   displayName: 'Package and Publish'
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   jobs:
