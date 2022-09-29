@@ -66,5 +66,6 @@ stages:
             artifactFeed: 'adacta-fintech'
 
         - script: |
-            python -m twine upload -r adacta-fintech --config-file $(PYPIRC_PATH) dist/*.whl
+            cat $(PYPIRC_PATH)
+            python -m twine upload -r adacta-fintech --verbose --config-file $(PYPIRC_PATH) dist/*.whl
           displayName: "Publish package"
