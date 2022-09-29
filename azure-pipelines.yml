@@ -34,10 +34,12 @@ stages:
         inputs:
           versionSpec: '$(python.version)'
         displayName: 'Use Python $(python.version)'
+
       - script: |
           python -m pip install --upgrade pip
           pip install -e '.[dev]'
         displayName: 'Install dependencies'
+
       - script: |
           pip install pytest pytest-azurepipelines
           pytest
@@ -47,7 +49,22 @@ stages:
   displayName: 'Package and Publish'
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   jobs:
-    - job: package
+    - job: package_and_publish
+      displayName: 'Package and publish'
       steps:
         - script: |
-            echo "Packaging happens here"
+            pip install wheel twine
+          displayName: "Install build and publish tools"
+
+        - script: |
+            python setup.py bdist_wheel
+          displayName: "Build wheel package"
+
+        - task: TwineAuthenticate@1
+          displayName: "Authenticate with feed"
+          inputs:
+            artifactFeed: 'adacta-fintech'
+
+        - script: |
+            python -m twine upload -r adacta-fintech --config-file $(PYPIRC_PATH) dist/*.whl
+          displayName: "Publish package"
