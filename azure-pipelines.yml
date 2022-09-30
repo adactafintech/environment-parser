@@ -49,7 +49,7 @@ stages:
   displayName: 'Package and Publish'
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   jobs:
-    - job: package_and_publish
+    - job: package_and_publish_test
       displayName: 'Package and publish'
       steps:
         - script: |
@@ -61,11 +61,11 @@ stages:
           displayName: "Build wheel package"
 
         - task: TwineAuthenticate@1
-          displayName: "Authenticate with feed"
+          displayName: "Authenticate with PyPI test"
           inputs:
-            artifactFeed: 'adacta-fintech'
+            pythonUploadServiceConnection: pypitest-adi-env-parser
 
         - script: |
             cat $(PYPIRC_PATH)
-            python -m twine upload -r adacta-fintech --verbose --config-file $(PYPIRC_PATH) dist/*.whl
+            python -m twine upload -r pypitest-adi-env-parser --verbose --config-file $(PYPIRC_PATH) dist/*.whl
           displayName: "Publish package"
