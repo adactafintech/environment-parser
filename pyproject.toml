@@ -21,6 +21,7 @@ file = "LICENSE.md"
 [project.optional-dependencies]
 dev = ["pre-commit", "autopep8", "pytest"]
 test = ["pytest"]
+build-local = ["setuptools>=45", "setuptools-scm[toml]>=6.2", "build"]
 
 [project.scripts]
 adi-env-parser = "adi_env_parser._console_parser:main"
