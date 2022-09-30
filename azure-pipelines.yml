@@ -57,6 +57,7 @@ stages:
           displayName: "Install build and publish tools"
 
         - script: |
+            rm -rf dist/* adi_env_parser.egg-info adi_env_parser/_version.py
             python -m build
           displayName: "Build wheel package"
 
