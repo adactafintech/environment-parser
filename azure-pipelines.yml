@@ -53,11 +53,11 @@ stages:
       displayName: 'Package and publish'
       steps:
         - script: |
-            pip install wheel twine
+            pip install build twine
           displayName: "Install build and publish tools"
 
         - script: |
-            python setup.py bdist_wheel
+            python -m build
           displayName: "Build wheel package"
 
         - task: TwineAuthenticate@1

@@ -158,7 +158,9 @@ optional arguments:
 
 ```sh
 pip install -e ".[dev]"
-pip install -e ".[test]
+pip install -e ".[test]"
+# Install build-local package group if you want to build packages locally
+pip install -e ".[build-local]"
 ```
 
 ### Install pre-commit
@@ -166,3 +168,7 @@ pip install -e ".[test]
 ```sh
 pre-commit install
 ```
+
+### Building and publishing new version
+
+New version is built and published on tag in GitHub repository. The package version is infered from commit name.

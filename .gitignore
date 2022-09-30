@@ -5,3 +5,4 @@
 *.egg-info
 dist
 build
+adi_env_parser/_version.py
