@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=45", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adi_env_parser"
+description = "Adinsure Environment parser"
+requires-python = ">=3.8, <4"
+classifiers = [
+    "Topic :: System :: System Administration",
+    "Topic :: Utilities"
+]
+authors = [
+    {name = "Jernej Kladnik", email = "jernej.kladnik@adacta-fintech.com"}
+]
+dynamic = ["version", "readme"]
+
+[project.license]
+file = "LICENSE.md"
+
+[project.optional-dependencies]
+dev = ["pre-commit", "autopep8", "pytest"]
+test = ["pytest"]
+
+[project.scripts]
+adi-env-parser = "adi_env_parser._console_parser:main"
+
+[project.urls]
+homepage = "https://github.com/adactafintech/environment-parser"
+documentation = "https://github.com/adactafintech/environment-parser"
+repository = "https://github.com/adactafintech/environment-parser"
+
+[tool.setuptools_scm]
+write_to = "adi_env_parser/_version.py"
+
+[tool.setuptools.dynamic]
+readme = {file = ["README.md"]}
