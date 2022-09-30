@@ -7,7 +7,7 @@ name = "adi_env_parser"
 description = "Adinsure Environment parser"
 requires-python = ">=3.8, <4"
 classifiers = [
-    "Topic :: System :: System Administration",
+    "Topic :: System :: Systems Administration",
     "Topic :: Utilities"
 ]
 authors = [
@@ -35,4 +35,4 @@ repository = "https://github.com/adactafintech/environment-parser"
 write_to = "adi_env_parser/_version.py"
 
 [tool.setuptools.dynamic]
-readme = {file = ["README.md"]}
+readme = {file = ["README.md"], content-type = "text/markdown"}
