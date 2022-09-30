@@ -63,9 +63,9 @@ stages:
         - task: TwineAuthenticate@1
           displayName: "Authenticate with PyPI test"
           inputs:
-            pythonUploadServiceConnection: pypitest-adi-env-parser
+            pythonUploadServiceConnection: pypitest
 
         - script: |
             cat $(PYPIRC_PATH)
-            python -m twine upload -r pypitest-adi-env-parser --verbose --config-file $(PYPIRC_PATH) dist/*.whl
+            python -m twine upload -r pypitest --verbose --config-file $(PYPIRC_PATH) dist/*.whl
           displayName: "Publish package"
