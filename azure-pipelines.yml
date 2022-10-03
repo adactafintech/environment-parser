@@ -46,7 +46,7 @@ stages:
         displayName: 'pytest'
 
 - stage: publish
-  displayName: 'Package and Publish'
+  displayName: 'Package and Publish - Test PYPI'
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   jobs:
     - job: package_and_publish_test
@@ -85,7 +85,8 @@ stages:
           timeoutInMinutes: 4200
 
     - job: package_and_publish_prod
-      displayName: 'Package and publish'
+      dependsOn: pre_prod_publish_validation
+      displayName: 'Package and publish - Prod PYPI'
       steps:
         - script: |
             pip install build twine
