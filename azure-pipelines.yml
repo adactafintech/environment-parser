@@ -70,8 +70,9 @@ stages:
             python -m twine upload -r pypitest --verbose --config-file $(PYPIRC_PATH) dist/*.whl
           displayName: "Publish package"
 
-    - job: package_and_publish_prod
-      displayName: 'Package and publish'
+    - job: pre_prod_publish_validation
+      displayName: 'Confirm prod PYPI publish'
+      pool: server
       timeoutInMinutes: 4320
       steps:
         - task: ManualValidation@0
@@ -82,6 +83,10 @@ stages:
               blaz.balon@adacta-fintech.com
             onTimeout: reject
           timeoutInMinutes: 4200
+
+    - job: package_and_publish_prod
+      displayName: 'Package and publish'
+      steps:
         - script: |
             pip install build twine
           displayName: "Install build and publish tools"
