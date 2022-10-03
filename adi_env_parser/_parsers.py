@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 
 class EnvironmentParser:
@@ -39,13 +40,13 @@ class EnvironmentParser:
                         # are reserved for list indices and this case is likely
                         # a misconfiguration
                         if current_key.isdigit():
-                            print(f"Invalid object property name {current_key}"
-                                  f"{current_key}")
+                            sys.stderr.write(f"Invalid object property name "
+                                             f"{current_key}\n")
                             break
                         # Do not allow dictionary keys starting with _
                         elif current_key.startswith("_"):
-                            print(f"Invalid object property name "
-                                  f"{current_key}")
+                            sys.stderr.write(f"Invalid object property name "
+                                             f"{current_key}\n")
                             break
                         b = b.setdefault(current_key, [] if next_key.isdigit()
                                          else {})
@@ -56,8 +57,9 @@ class EnvironmentParser:
                             b.append({})
                             b = b[int(current_key)]
                         else:
-                            print(f"Index {current_key} out of bounds for "
-                                  f"list of length {len(b)}")
+                            sys.stderr.write(f"Index {current_key} out of "
+                                             f"bounds for list of length "
+                                             f"{len(b)}\n")
                             break
                 # If it is the last element, we need to either set the value
                 # of the dictionary key or set the value of the list index
@@ -67,18 +69,19 @@ class EnvironmentParser:
                         # are reserved for list indices and this case is likely
                         # a misconfiguration
                         if current_key.isdigit():
-                            print(f"Invalid object property name "
-                                  f"{current_key}")
+                            sys.stderr.write(f"Invalid object property name "
+                                             f"{current_key}\n")
                             break
                         # Do not allow dictionary keys starting with _
                         elif current_key.startswith("_"):
-                            print(f"Invalid object property name "
-                                  f"{current_key}")
+                            sys.stderr.write(f"Invalid object property name "
+                                             f"{current_key}\n")
                             break
                         b[current_key] = v
                     elif isinstance(b, list):
                         if not current_key.isdigit():
-                            print(f"Invalid list index {current_key}")
+                            sys.stderr.write(f"Invalid list index "
+                                             f"{current_key}\n")
                             break
                         if len(b) > int(current_key):
                             b[int(current_key)] = v
@@ -87,8 +90,9 @@ class EnvironmentParser:
                         # In case index order defined in environment variables
                         # is incorrect, skip that variable.
                         else:
-                            print(f"Index {current_key} out of bounds for "
-                                  f"list of length {len(b)}")
+                            sys.stderr.write(f"Index {current_key} out of "
+                                             f"bounds for list of length "
+                                             f"{len(b)}\n")
                             break
 
     @staticmethod
