@@ -33,10 +33,10 @@ def main():
 
     try:
         parser = EnvironmentParser(**parser_config)
-        print(json.dumps(parser.configuration, indent=args.indent))
+        sys.stdout.write(json.dumps(parser.configuration, indent=args.indent))
     except FileNotFoundError:
-        print(f"File {args.json} not found.")
+        sys.stderr.write(f"File {args.json} not found.\n")
         sys.exit(1)
     except json.JSONDecodeError:
-        print(f"Unable to parse JSON file {args.json}")
+        sys.stderr.write(f"Unable to parse JSON file {args.json}\n")
         sys.exit(1)
