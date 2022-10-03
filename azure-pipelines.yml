@@ -46,11 +46,11 @@ stages:
         displayName: 'pytest'
 
 - stage: publish
-  displayName: 'Package and Publish - Test PYPI'
+  displayName: 'Package and Publish'
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   jobs:
     - job: package_and_publish_test
-      displayName: 'Package and publish'
+      displayName: 'Package and publish - Test PYPI'
       steps:
         - script: |
             pip install build twine
