@@ -67,6 +67,36 @@ stages:
             pythonUploadServiceConnection: pypitest
 
         - script: |
-            cat $(PYPIRC_PATH)
             python -m twine upload -r pypitest --verbose --config-file $(PYPIRC_PATH) dist/*.whl
+          displayName: "Publish package"
+
+    - job: package_and_publish_prod
+      displayName: 'Package and publish'
+      timeoutInMinutes: 4320
+      steps:
+        - task: ManualValidation@0
+          inputs:
+            instructions: "Confirm publish to production PyPI repository"
+            notifyUsers: |
+              jernej.kladnik@adacta-fintech.com
+              blaz.balon@adacta-fintech.com
+            onTimeout: reject
+          timeoutInMinutes: 4200
+        - script: |
+            pip install build twine
+          displayName: "Install build and publish tools"
+
+        - script: |
+            rm -rf dist/* adi_env_parser.egg-info adi_env_parser/_version.py
+            python -m build
+          displayName: "Build wheel package"
+
+        - task: TwineAuthenticate@1
+          displayName: "Authenticate with PyPI"
+          inputs:
+            pythonUploadServiceConnection: pypi
+
+        - script: |
+            cat $(PYPIRC_PATH)
+            python -m twine upload -r pypi --verbose --config-file $(PYPIRC_PATH) dist/*.whl
           displayName: "Publish package"
