@@ -7,7 +7,8 @@
 ## Using the environment parser
 
 EnvironmentParser class parses all environment variables with certain prefix and
-creates a Python dictionary based on the structure of these variables.
+creates a Python dictionary based on the structure of these variables. The values
+are converted to booleans and integers when detected as such by default.
 
 General variable structure rules:
 
@@ -18,6 +19,12 @@ General variable structure rules:
 * arrays can be specified by using numeric index as a key within particular level
 * array numeric indices should be defined in order, variables with invalid index
   will be discarded
+
+Value conversion rules:
+
+* value will be converted to boolean if it matches `true` or `false` when lower
+  cased
+* value will be converted to integer if it contains digits only
 
 ### Using the EnvironmentParser class
 
@@ -41,6 +48,15 @@ from adi_env_parser import EnvironmentParser
 
 parser = EnvironmentParser(prefix="MYPREFIX", config_file="configuration.json")
 print(json.dump(json.dumps(parser.configuration, indent=4)))
+```
+
+It is possible to disable value conversion by setting `convert_values` parameter
+when instantiating `EnvironmentParser` object.
+
+```python
+from adi_env_parser import EnvironmentParser
+
+parser = EnvironmentParser(prefix="MYPREFIX", convert_values=False)
 ```
 
 ### Examples

@@ -1,10 +1,12 @@
 import json
 import os
 import sys
+from typing import Union
 
 
 class EnvironmentParser:
-    def __init__(self, prefix: str = "PYENV", config_file: str = None):
+    def __init__(self, prefix: str = "PYENV", config_file: str = None,
+                 convert_values: bool = True):
         """Environment Parser
         Parses environment variables prefixed by <prefix>_.
         Different objects within environment variables are separated by __.
@@ -18,6 +20,7 @@ class EnvironmentParser:
         """
         self.key_delimiter = "__"
         self.namespace = prefix
+        self.convert_values = convert_values
         self.os_env = self.extract_variables(self.namespace)
         self.configuration = {} if not config_file else \
             self.load_json_configuration(config_file)
@@ -77,16 +80,16 @@ class EnvironmentParser:
                             sys.stderr.write(f"Invalid object property name "
                                              f"{current_key}\n")
                             break
-                        b[current_key] = v
+                        b[current_key] = self._convert_value(v)
                     elif isinstance(b, list):
                         if not current_key.isdigit():
                             sys.stderr.write(f"Invalid list index "
                                              f"{current_key}\n")
                             break
                         if len(b) > int(current_key):
-                            b[int(current_key)] = v
+                            b[int(current_key)] = self._convert_value(v)
                         elif len(b) == int(current_key):
-                            b.append(v)
+                            b.append(self._convert_value(v))
                         # In case index order defined in environment variables
                         # is incorrect, skip that variable.
                         else:
@@ -94,6 +97,21 @@ class EnvironmentParser:
                                              f"bounds for list of length "
                                              f"{len(b)}\n")
                             break
+
+    def _convert_value(self, value: str) -> Union[str, bool]:
+        if not self.convert_values:
+            return value
+
+        if value.isdigit():
+            return int(value)
+
+        if value.lower() == "true":
+            return True
+
+        if value.lower() == "false":
+            return False
+
+        return value
 
     @staticmethod
     def extract_variables(namespace: str) -> dict:

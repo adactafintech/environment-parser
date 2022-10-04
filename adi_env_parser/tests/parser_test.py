@@ -5,7 +5,7 @@ TEST_DATA_DIR = "adi_env_parser/test_data"
 
 
 class TestParser:
-    def test_parser_empy_objects(self):
+    def test_parser_empty_objects(self):
         env_prefix = "OBJ"
 
         expected = {
@@ -23,7 +23,7 @@ class TestParser:
         parser = EnvironmentParser(env_prefix)
         assert parser.configuration == expected
 
-    def test_parser_empy_lists(self):
+    def test_parser_empty_lists(self):
         env_prefix = "LIST"
 
         expected = {
@@ -49,7 +49,7 @@ class TestParser:
         parser = EnvironmentParser(env_prefix)
         assert parser.configuration == expected
 
-    def test_parser_empy_dictionary_in_list(self):
+    def test_parser_empty_dictionary_in_list(self):
         env_prefix = "DICTLIST"
 
         expected = {
@@ -171,6 +171,43 @@ class TestParser:
         env["TEST4_work_task_one"] = "done"
 
         parser = EnvironmentParser(env_prefix)
+        assert parser.configuration == expected
+
+    def test_convert_values(self):
+        env_prefix = "CONVERT"
+
+        expected = {
+            "boolean": {
+                "true": True,
+                "false": False
+            },
+            "integer": 123,
+            "strings": ["text", "123.0"]
+        }
+
+        # Set environment for tests
+        env["CONVERT_boolean__true"] = "true"
+        env["CONVERT_boolean__false"] = "false"
+        env["CONVERT_integer"] = "123"
+        env["CONVERT_strings__0"] = "text"
+        env["CONVERT_strings__1"] = "123.0"
+
+        parser = EnvironmentParser(env_prefix)
+        assert parser.configuration == expected
+
+    def test_no_convert_values(self):
+        env_prefix = "CONVERT"
+
+        expected = {
+            "boolean": {
+                "true": "true",
+                "false": "false"
+            },
+            "integer": "123",
+            "strings": ["text", "123.0"]
+        }
+
+        parser = EnvironmentParser(env_prefix, convert_values=False)
         assert parser.configuration == expected
 
     def test_parser_existing_config(self):
