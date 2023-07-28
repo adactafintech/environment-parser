@@ -128,7 +128,8 @@ class EnvironmentParser:
         """
         def variable_in_ignore_list(variable, ignore_list):
             for prefix in ignore_list:
-                if variable.startswith(prefix):
+                pfx = prefix + "_"
+                if variable.startswith(pfx):
                     return True
             return False
 

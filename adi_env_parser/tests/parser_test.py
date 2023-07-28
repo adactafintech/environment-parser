@@ -181,6 +181,9 @@ class TestParser:
             "employee": {
                 "surname": "Smith"
             },
+            "externaluser": {
+                "surname": "Threepwood"
+            },
             "work_task_one": "done"
         }
 
@@ -188,6 +191,7 @@ class TestParser:
         env["IGNORE_employee__surname"] = "Smith"
         env["IGNORE_external__surname"] = "Doe"
         env["IGNORE_external__name"] = "John"
+        env["IGNORE_externaluser__surname"] = "Threepwood"
         env["IGNORE_visitor_surname"] = "Manley"
         env["IGNORE_visitor_name"] = "Les"
         env["IGNORE_work_task_one"] = "done"
