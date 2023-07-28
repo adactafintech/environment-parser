@@ -24,12 +24,18 @@ def main():
         "--indent", "-i", type=int, nargs='?', required=False, default=4,
         help="Number of spaces to use for indentation of output JSON string"
         )
+    arg_parser.add_argument(
+        "--ignore-prefix", "-n", type=str, action="append", default=[],
+        required=False, help="Environment variable prefix to ignore. Can be "
+                             "used multiple times."
+    )
 
     args = arg_parser.parse_args()
 
     parser_config = {}
     parser_config.update({"prefix": args.prefix}) if args.prefix else None
     parser_config.update({"config_file": args.json}) if args.json else None
+    parser_config.update({"prefix_ignore_list": args.ignore_prefix})
 
     try:
         parser = EnvironmentParser(**parser_config)

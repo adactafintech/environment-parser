@@ -166,6 +166,8 @@ optional arguments:
                         JSON formatted file to read as base configuration
   --indent [INDENT], -i [INDENT]
                         Number of spaces to use for indentation of output JSON string
+  --ignore-prefix IGNORE_PREFIX, -n IGNORE_PREFIX
+                        Environment variable prefix to ignore. Can be used multiple times.
 ```
 
 ## Development

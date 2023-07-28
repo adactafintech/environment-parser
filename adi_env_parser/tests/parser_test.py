@@ -173,6 +173,29 @@ class TestParser:
         parser = EnvironmentParser(env_prefix)
         assert parser.configuration == expected
 
+    def test_exclusion_list(self):
+        env_prefix = "IGNORE"
+        ignore_prefixes = ["IGNORE_external", "IGNORE_visitor"]
+
+        expected = {
+            "employee": {
+                "surname": "Smith"
+            },
+            "work_task_one": "done"
+        }
+
+        # Set environment for tests
+        env["IGNORE_employee__surname"] = "Smith"
+        env["IGNORE_external__surname"] = "Doe"
+        env["IGNORE_external__name"] = "John"
+        env["IGNORE_visitor_surname"] = "Manley"
+        env["IGNORE_visitor_name"] = "Les"
+        env["IGNORE_work_task_one"] = "done"
+
+        parser = EnvironmentParser(env_prefix,
+                                   prefix_ignore_list=ignore_prefixes)
+        assert parser.configuration == expected
+
     def test_convert_values(self):
         env_prefix = "CONVERT"
 

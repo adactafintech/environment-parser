@@ -6,7 +6,7 @@ from typing import Union
 
 class EnvironmentParser:
     def __init__(self, prefix: str = "PYENV", config_file: str = None,
-                 convert_values: bool = True):
+                 convert_values: bool = True, prefix_ignore_list: list = []):
         """Environment Parser
         Parses environment variables prefixed by <prefix>_.
         Different objects within environment variables are separated by __.
@@ -20,8 +20,11 @@ class EnvironmentParser:
         """
         self.key_delimiter = "__"
         self.namespace = prefix
+        self.prefix_ignore_list = prefix_ignore_list
         self.convert_values = convert_values
-        self.os_env = self.extract_variables(self.namespace)
+        self.os_env = self.extract_variables(
+            self.namespace, self.prefix_ignore_list
+        )
         self.configuration = {} if not config_file else \
             self.load_json_configuration(config_file)
         self.build_configuration()
@@ -114,7 +117,7 @@ class EnvironmentParser:
         return value
 
     @staticmethod
-    def extract_variables(namespace: str) -> dict:
+    def extract_variables(namespace: str, prefix_ignore_list: list) -> dict:
         """Extract variables belonging to namespace
 
         Args:
@@ -123,9 +126,17 @@ class EnvironmentParser:
         Returns:
             dict: Dictionary containing only variables belonging to namespace
         """
+        def variable_in_ignore_list(variable, ignore_list):
+            for prefix in ignore_list:
+                if variable.startswith(prefix):
+                    return True
+            return False
+
         extracted = {}
         pfx = namespace + "_"
         for variable_name in os.environ.keys():
+            if variable_in_ignore_list(variable_name, prefix_ignore_list):
+                continue
             if variable_name.startswith(pfx):
                 # With Python 3.9 remove_prefix function could be used
                 no_pfx_name = variable_name[len(pfx):]
