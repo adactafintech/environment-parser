@@ -175,7 +175,8 @@ class TestParser:
 
     def test_exclusion_list(self):
         env_prefix = "IGNORE"
-        ignore_prefixes = ["IGNORE_external", "IGNORE_visitor"]
+        ignore_prefixes = ["IGNORE_external", "IGNORE_visitor",
+                           "IGNORE_exact_match"]
 
         expected = {
             "employee": {
@@ -194,6 +195,7 @@ class TestParser:
         env["IGNORE_externaluser__surname"] = "Threepwood"
         env["IGNORE_visitor_surname"] = "Manley"
         env["IGNORE_visitor_name"] = "Les"
+        env["IGNORE_exact_match"] = "true"
         env["IGNORE_work_task_one"] = "done"
 
         parser = EnvironmentParser(env_prefix,

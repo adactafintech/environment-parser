@@ -131,6 +131,8 @@ class EnvironmentParser:
                 pfx = prefix + "_"
                 if variable.startswith(pfx):
                     return True
+                if variable == prefix:
+                    return True
             return False
 
         extracted = {}
