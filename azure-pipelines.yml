@@ -80,7 +80,7 @@ stages:
             instructions: "Confirm publish to production PyPI repository"
             notifyUsers: |
               jernej.kladnik@adacta-fintech.com
-              blaz.balon@adacta-fintech.com
+              uros.golja@adacta-fintech.com
             onTimeout: reject
           timeoutInMinutes: 4200
 
