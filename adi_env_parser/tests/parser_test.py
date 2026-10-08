@@ -286,3 +286,51 @@ class TestParser:
 
         parser = EnvironmentParser(env_prefix, f"{TEST_DATA_DIR}/base.json")
         assert parser.configuration == expected
+
+    def test_parser_existing_jsonc_config(self):
+        env_prefix = "EXISTING"
+
+        expected = {
+            "work_tasks": {
+                "task_one": "done",
+                "task_two": "done"
+            },
+            "work_inventory": [
+                "laptop",
+                "mouse",
+                "keyboard"
+            ],
+            "home": {
+                "garage_inventory": [
+                    "tools",
+                    "lawnmover"
+                ],
+                "kitchen_inventory": [
+                    "cuttlery",
+                    "pots"
+                ]
+            },
+            "games": [
+                {
+                    "title": "Unfathomable",
+                    "publisher": "Fantasy Flight Games"
+                },
+                {
+                    "title": "Cartographers",
+                    "publisher": "Thunderworks Games"
+                }
+            ]
+        }
+
+        # Set environment for tests
+        env["EXISTING_work_tasks__task_two"] = "done"
+        env["EXISTING_work_inventory__2"] = "keyboard"
+        env["EXISTING_home__kitchen_inventory__0"] = "cuttlery"
+        env["EXISTING_home__kitchen_inventory__1"] = "pots"
+        env["EXISTING_games__0__title"] = "Unfathomable"
+        env["EXISTING_games__0__publisher"] = "Fantasy Flight Games"
+        env["EXISTING_games__1__title"] = "Cartographers"
+        env["EXISTING_games__1__publisher"] = "Thunderworks Games"
+
+        parser = EnvironmentParser(env_prefix, f"{TEST_DATA_DIR}/base.jsonc")
+        assert parser.configuration == expected

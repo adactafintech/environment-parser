@@ -1,5 +1,6 @@
 import argparse
 import json
+import pyjson5
 import sys
 from . import EnvironmentParser
 
@@ -18,7 +19,7 @@ def main():
         )
     arg_parser.add_argument(
         "--json", "-j", type=str, nargs='?', required=False, default=None,
-        help="JSON formatted file to read as base configuration"
+        help="JSON/JSONC formatted file to read as base configuration"
         )
     arg_parser.add_argument(
         "--indent", "-i", type=int, nargs='?', required=False, default=4,
@@ -43,6 +44,6 @@ def main():
     except FileNotFoundError:
         sys.stderr.write(f"File {args.json} not found.\n")
         sys.exit(1)
-    except json.JSONDecodeError:
+    except pyjson5.Json5ExtraData:
         sys.stderr.write(f"Unable to parse JSON file {args.json}\n")
         sys.exit(1)

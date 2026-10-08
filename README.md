@@ -40,7 +40,7 @@ parser = EnvironmentParser(prefix="MYPREFIX")
 print(json.dump(json.dumps(parser.configuration, indent=4)))
 ```
 
-It is possible to provide existing JSON formatted file as a configuration base.
+It is possible to provide existing JSON/JSONC formatted file as a configuration base.
 
 ```python
 import json
@@ -149,7 +149,7 @@ Resulting object:
 ### Console utility
 
 Module provides console utility which can be used for parsing of environment
-variables. It also supports reading of existing JSON formatted file and setting
+variables. It also supports reading of existing JSON/JSONC formatted file and setting
 indentation for output of created configuration JSON object.
 
 ```sh
@@ -163,7 +163,7 @@ optional arguments:
   --prefix [PREFIX], -p [PREFIX]
                         Environment variable prefix. Default: PYENV
   --json [JSON], -j [JSON]
-                        JSON formatted file to read as base configuration
+                        JSON/JSONC formatted file to read as base configuration
   --indent [INDENT], -i [INDENT]
                         Number of spaces to use for indentation of output JSON string
   --ignore-prefix IGNORE_PREFIX, -n IGNORE_PREFIX

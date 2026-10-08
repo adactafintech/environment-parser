@@ -1,4 +1,5 @@
 import json
+import pyjson5
 import os
 import sys
 from typing import Union
@@ -164,5 +165,9 @@ class EnvironmentParser:
         Returns:
             dict: Configuration dictionary
         """
-        with open(file_path, "r") as file:
-            return json.load(file)
+        try:
+            with open(file_path, "r", encoding="utf-8") as file:
+                return json.load(file)
+        except json.JSONDecodeError:
+            with open(file_path, "r", encoding="utf-8") as file:
+                return pyjson5.load(file)
