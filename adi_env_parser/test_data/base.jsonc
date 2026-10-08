@@ -1,0 +1,21 @@
+/* General
+   multiline
+   comment
+*/
+{
+  "work_tasks": {
+    "task_one": "done",
+    "task_two": "waiting"
+  },
+  // Single line comment
+  "work_inventory": [
+    "laptop", // Inline single line comment
+    "mouse"
+  ],
+  "home": {
+    "garage_inventory": [
+      "tools",
+      "lawnmover"
+    ]
+  }
+}
